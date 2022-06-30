@@ -1,14 +1,19 @@
 package br.com.devdojo.handler;
 
+import br.com.devdojo.error.ErrorDetails;
 import br.com.devdojo.error.ResourceNotFoundDetails;
 import br.com.devdojo.error.ResourceNotFoundException;
 import br.com.devdojo.error.ValidationErrorDetails;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.Date;
 import java.util.List;
@@ -19,7 +24,7 @@ import java.util.stream.Collectors;
  */
 @ControllerAdvice  //permite utilizar essa classe criada abaixo através das diversas camadas do Spring
 //por causa desse controller todas as vezes que essa excessão for lançada o proprio Spring sera responsável por lançar esse @ExceptionHandler abaixo
-public class RestExceptionHandler {
+public class RestExceptionHandler{
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourceNotFoundExcepton(ResourceNotFoundException rnfException){
         ResourceNotFoundDetails rnfDetails = ResourceNotFoundDetails.Builder
@@ -50,4 +55,7 @@ public class RestExceptionHandler {
                 .build();
         return new ResponseEntity<>(rnfDetails, HttpStatus.BAD_REQUEST);
     }
+//a classe extendida ResponseEntityExceptionHandler sempre chama outra classe
+// que para padronizar os erros e bom sobreescrever conforme abaixo
+//Não funcionou
 }
