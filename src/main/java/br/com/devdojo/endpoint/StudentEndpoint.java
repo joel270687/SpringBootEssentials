@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +34,16 @@ public class StudentEndpoint {
     //@RequestMapping(method = RequestMethod.GET) //path = "/list" //o path só usa se tiver mais de um metodo GET
     @GetMapping //essa anotação substitui o de cima
     public ResponseEntity<?> listAll(Pageable pageable){ //só de colocar esse Pageable aqui e no return aí na requisição do postman adicionar => students?page=0&size=3
+        //pra usar o sort é só colocar na requisição => students?sort=name,desc&sort=email,desc
         //System.out.println("-----acessou a student/list ------->>>"+dataUtil.formaLocalDateTimeToDataBaseStyle(LocalDateTime.now()));
         return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK);
     }
 
     //@RequestMapping(method = RequestMethod.GET, path = "/{id}")
     @GetMapping(path = "/{id}") //essa anotação substitui o de cima
-    public ResponseEntity<?> getStudentById(@PathVariable("id") Long id){
+    public ResponseEntity<?> getStudentById(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails){
+                                                                        //essa anotação é só se caso nesse mêtodo precise utilizar os dados do usuario
+                                                                        //passados na requisição, usuarios lá da SecurityConfig.java
         verifyIfStudentExist(id);
         Optional<Student> student = studentDAO.findById(id);
         return new ResponseEntity<>(student, HttpStatus.OK);
@@ -57,6 +63,7 @@ public class StudentEndpoint {
 
     //@RequestMapping(method = RequestMethod.DELETE) //dar olhada no conceito idempotent
     @DeleteMapping(path = "/{id}") //essa anotação substitui o de cima
+    @PreAuthorize("hasRole('ADMIN')") //pra deletar precisa ser um usuario setado na securityConfig.java como role=ADMIN
     public ResponseEntity<?> delete(@PathVariable Long id) {
         verifyIfStudentExist(id);
         studentDAO.deleteById(id);

@@ -38,6 +38,11 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId> <!-- só de colocar essa dependencia já ira precisar-->
+			<!-- de autenticação nas requisições usuario: user e Basic Auth: vai ser gerado no console-->
+		</dependency>
+		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
