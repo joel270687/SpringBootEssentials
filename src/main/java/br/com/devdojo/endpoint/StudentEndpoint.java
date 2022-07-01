@@ -4,6 +4,7 @@ import br.com.devdojo.error.ResourceNotFoundException;
 import br.com.devdojo.model.Student;
 import br.com.devdojo.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,9 +30,9 @@ public class StudentEndpoint {
 
     //@RequestMapping(method = RequestMethod.GET) //path = "/list" //o path só usa se tiver mais de um metodo GET
     @GetMapping //essa anotação substitui o de cima
-    public ResponseEntity<?> listAll(){
+    public ResponseEntity<?> listAll(Pageable pageable){ //só de colocar esse Pageable aqui e no return aí na requisição do postman adicionar => students?page=0&size=3
         //System.out.println("-----acessou a student/list ------->>>"+dataUtil.formaLocalDateTimeToDataBaseStyle(LocalDateTime.now()));
-        return new ResponseEntity<>(studentDAO.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK);
     }
 
     //@RequestMapping(method = RequestMethod.GET, path = "/{id}")
