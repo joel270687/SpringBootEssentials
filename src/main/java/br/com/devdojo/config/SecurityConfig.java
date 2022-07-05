@@ -24,17 +24,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //faz com que toda aplicação, todas requisições precise ser autenticada
-                http
-                .csrf().disable()//disabilitando a segurança para ataques Cross-Site Request Forgery (CSRF)
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET).permitAll()//permite todos os GET
-                        .antMatchers(HttpMethod.POST).permitAll()//permite todos os POST
-                        .antMatchers(HttpMethod.PUT).permitAll()//permite todos os PUT
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic();// //tipo de autenticação BasicAuth
-                //.and()
-                //.csrf().disable();//disabilitando a segurança para ataques Cross-Site Request Forgery (CSRF)
+                http.authorizeRequests()
+                        .antMatchers("/*/students/**").hasRole("USER")
+                        .antMatchers("/*/admin/**").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.GET).authenticated()//todos os GETs precisam ser autenticados
+                        //.antMatchers(HttpMethod.POST).permitAll()//permite todos os POST
+                        //.antMatchers(HttpMethod.PUT).permitAll()//permite todos os PUT
+                        .and()
+                        .httpBasic()//tipo de autenticação BasicAuth
+                        .and()
+                        .csrf().disable();//disabilitando a segurança para ataques Cross-Site Request Forgery (CSRF)
     }
 
     @Override

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +25,7 @@ import java.util.Optional;
 @RestController //diferença pela @Controller é que ele já adiciona o @ResponseBody para todos os métodos
                 //@ResponseBody converte a requisição em Json e manda no corpo da requisição
 // o @Controller foi criado para o padão MVC retornando uma view
-@RequestMapping("students")
+@RequestMapping("v1")
 public class StudentEndpoint {
     private final StudentRepository studentDAO;
     @Autowired //quando instanciar a classe StudentEndponit essa anotação já vai criar o studentDAO com as dependencias para serem usados
@@ -32,7 +34,7 @@ public class StudentEndpoint {
     }
 
     //@RequestMapping(method = RequestMethod.GET) //path = "/list" //o path só usa se tiver mais de um metodo GET
-    @GetMapping //essa anotação substitui o de cima
+    @GetMapping(path = "user/students") //essa anotação substitui o de cima
     public ResponseEntity<?> listAll(Pageable pageable){ //só de colocar esse Pageable aqui e no return aí na requisição do postman adicionar => students?page=0&size=3
         //pra usar o sort é só colocar na requisição => students?sort=name,desc&sort=email,desc
         //System.out.println("-----acessou a student/list ------->>>"+dataUtil.formaLocalDateTimeToDataBaseStyle(LocalDateTime.now()));
@@ -40,7 +42,7 @@ public class StudentEndpoint {
     }
 
     //@RequestMapping(method = RequestMethod.GET, path = "/{id}")
-    @GetMapping(path = "/{id}") //essa anotação substitui o de cima
+    @GetMapping(path = "user/students/{id}") //essa anotação substitui o de cima
     public ResponseEntity<?> getStudentById(@PathVariable("id") Long id, @AuthenticationPrincipal UserDetails userDetails){
                                                                         //essa anotação é só se caso nesse mêtodo precise utilizar os dados do usuario
                                                                         //passados na requisição, usuarios lá da SecurityConfig.java
@@ -49,21 +51,22 @@ public class StudentEndpoint {
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
-    @GetMapping(path = "/findByName/{name}")
+    @GetMapping(path = "user/students/findByName/{name}")
     public ResponseEntity<?> findStudentByName (@PathVariable String name){
         return new ResponseEntity<>(studentDAO.findByNameIgnoreCaseContaining(name), HttpStatus.OK);
     }
 
     //@RequestMapping(method = RequestMethod.POST)
-    @PostMapping //essa anotação substitui o de cima
+    @PostMapping(path = "admin/students") //essa anotação substitui o de cima
     @Transactional(rollbackFor = Exception.class)//informa que esse metodo é do tipo transacional. retornos Rollback do banco, incluir duas vezes por exemplo
     public ResponseEntity<?> save(@Valid @RequestBody Student student) {
         return new ResponseEntity<>(studentDAO.save(student), HttpStatus.CREATED);
     }
 
     //@RequestMapping(method = RequestMethod.DELETE) //dar olhada no conceito idempotent
-    @DeleteMapping(path = "/{id}") //essa anotação substitui o de cima
-    @PreAuthorize("hasRole('ADMIN')") //pra deletar precisa ser um usuario setado na securityConfig.java como role=ADMIN
+    @DeleteMapping(path = "admin/students/{id}") //essa anotação substitui o de cima
+    //@PreAuthorize("hasRole('ADMIN')") //pra deletar precisa ser um usuario setado na securityConfig.java como role=ADMIN
+                                        // mas já foi atualizado colocando .antMatchers e colocando os prefixos nas URLs
     public ResponseEntity<?> delete(@PathVariable Long id) {
         verifyIfStudentExist(id);
         studentDAO.deleteById(id);
@@ -71,7 +74,7 @@ public class StudentEndpoint {
     }
 
     //@RequestMapping(method = RequestMethod.PUT)
-    @PutMapping //essa anotação substitui o de cima
+    @PutMapping(path = "admin/students")  //essa anotação substitui o de cima
     public ResponseEntity<?> update(@RequestBody Student student) {
         verifyIfStudentExist(student.getId());
         studentDAO.save(student);
