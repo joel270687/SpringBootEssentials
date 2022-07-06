@@ -7,9 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +35,8 @@ public class StudentEndpoint {
     public ResponseEntity<?> listAll(Pageable pageable){ //só de colocar esse Pageable aqui e no return aí na requisição do postman adicionar => students?page=0&size=3
         //pra usar o sort é só colocar na requisição => students?sort=name,desc&sort=email,desc
         //System.out.println("-----acessou a student/list ------->>>"+dataUtil.formaLocalDateTimeToDataBaseStyle(LocalDateTime.now()));
-        return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK);
+        //return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK); //dessa maneira retorna a requisição por páginas
+        return new ResponseEntity<>(studentDAO.findAll(), HttpStatus.OK);//tirando o pageable retorna todos os estudantes
     }
 
     //@RequestMapping(method = RequestMethod.GET, path = "/{id}")
