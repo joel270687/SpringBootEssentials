@@ -36,7 +36,7 @@ public class StudentEndpoint {
         //pra usar o sort é só colocar na requisição => students?sort=name,desc&sort=email,desc
         //System.out.println("-----acessou a student/list ------->>>"+dataUtil.formaLocalDateTimeToDataBaseStyle(LocalDateTime.now()));
         //return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK); //dessa maneira retorna a requisição por páginas
-        return new ResponseEntity<>(studentDAO.findAll(), HttpStatus.OK);//tirando o pageable retorna todos os estudantes
+        return new ResponseEntity<>(studentDAO.findAll(pageable), HttpStatus.OK);//tirando o pageable retorna todos os estudantes
     }
 
     //@RequestMapping(method = RequestMethod.GET, path = "/{id}")
