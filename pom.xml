@@ -59,6 +59,17 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.6</version>
 		</dependency>
+		<dependency><!-- usado para test  sem utilizar o nosso BD, toda vez que utilizar o test vai criar um banco limpo em memória -->
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope><!--quando chamar vai aparecer um banco mas quando finaliza será feito um rollback -->
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
