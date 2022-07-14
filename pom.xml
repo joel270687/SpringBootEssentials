@@ -11,6 +11,7 @@
 	<groupId>br.com.devdojo</groupId>
 	<artifactId>demo</artifactId>
 	<version>0.0.1</version>
+	<packaging>jar</packaging> <!-- tipo de executavel-->
 	<name>SpringBootEssentials</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -79,10 +80,20 @@
 	</dependencies>
 
 	<build>
+		<finalName>devdojo</finalName> <!-- nome do .jar a ser criado como executavel-->
+		 <!--para fazer o build no menu Maven-> Lifecycle -> executar o clean, e depois o package-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<executable>true</executable> <!-- colocando essa configuração ele cria o executavel do tipo .jar informado no <packaging> lá em cima -->
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.1.0</version>
 			</plugin>
 		</plugins>
 	</build>
