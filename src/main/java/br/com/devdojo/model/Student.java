@@ -14,19 +14,24 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 public class Student extends AbstractEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
     @NotEmpty(message = "O campo nome é obrigatório")
     private String name;
     @NotEmpty
     @Email(message = "Digite um email válido")
     private String email;
 
-    public Student(@NotEmpty(message = "O campo nome é obrigatório") String name, @NotEmpty @Email String email) {
+    public Student(String name, String email) {
         this.name = name;
         this.email = email;
     }
+
+    public Student(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
+
+
 
     public Student() {
     }

@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.*;
 /**
  * Created by Joel on 11/07/2022.
  */
+//TESTES DE BANCO DE DADOS
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE) //Essa anotação faz com que o teste seja feito no banco de dados real, e faz o rollback

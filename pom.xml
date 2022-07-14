@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.0</version>
+		<version>2.7.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.devdojo</groupId>
@@ -41,6 +41,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId> <!-- só de colocar essa dependencia já ira precisar-->
 			<!-- de autenticação nas requisições usuario: user e Basic Auth: vai ser gerado no console-->
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId><!-- para utilizar o @WhitMockUser no StudentEndpointTest.java-->
+			<artifactId>spring-security-test</artifactId>
+			<version>5.7.2</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
