@@ -6,4 +6,5 @@ package br.com.devdojo.model;
 public class TesteGit {
     String testeTxt;
     //anotações em desenv
+    //anotações desenv2
 }
